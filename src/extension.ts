@@ -66,8 +66,18 @@ export function activate(context: vscode.ExtensionContext) {
 				chosenItem = qp.selectedItems[0];
 			}
 
+			console.log(`chosen item is : ${JSON.stringify(chosenItem)}`);
+			const parsedUri = vscode.Uri.parse(chosenItem.label);
+			console.log(`parsed URI : ${parsedUri}`);
+
+			const externalUri = await vscode.env.asExternalUri(parsedUri);
+			console.log(`external URI : ${externalUri}`);
+
+			const result = await vscode.env.openExternal(externalUri);
+			console.log(result);
+
 			// do the thing
-			if (!(await vscode.env.openExternal(await vscode.env.asExternalUri(vscode.Uri.parse(chosenItem.label))))) {
+			if (!(result)) {
 				return;
 			}
 
